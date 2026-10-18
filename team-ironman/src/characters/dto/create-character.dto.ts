@@ -1,20 +1,23 @@
-import { IsString, IsNotEmpty, IsNumber, Min, Max, IsEnum, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt, Min, Max, IsEnum, IsBoolean, IsOptional, MaxLength } from 'class-validator';
 import { CharacterStatus } from '../status/characterStatus.enum';
 
 export class CreateCharacterDto {
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   real_name: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   alias: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(150)
   main_power: string;
 
-  @IsNumber()
+  @IsInt()
   @Min(1)
   @Max(100)
   power_level: number;
@@ -26,7 +29,7 @@ export class CreateCharacterDto {
   @IsBoolean()
   is_villain: boolean;
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
-  team_id?: number;
+  team_id?: number | null;
 }

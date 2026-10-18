@@ -29,8 +29,8 @@ export class Character {
   @Column()
   is_villain: boolean;
 
-  @Column({ nullable: true })
-  team_id: number; 
+  @Column({ type: 'int', nullable: true })
+  team_id: number | null;
 
   
   @ManyToOne(() => Team, { nullable: true, onDelete: 'SET NULL' })

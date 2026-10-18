@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Patch, Delete, Query, ParseIntPipe, ParseEnumPipe } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
+import { UpdateCharacterDto } from './dto/update-character.dto';
 import { UpdateStatusDto } from './status/update-characterStatus.dto';
 import { CharacterStatus } from './status/characterStatus.enum';
 
@@ -10,7 +11,7 @@ export class CharactersController {
 
   @Get()
   findAll(
-    @Query('status') status?: CharacterStatus,
+    @Query('status', new ParseEnumPipe(CharacterStatus, { optional: true })) status?: CharacterStatus,
     @Query('teamId', new ParseIntPipe({ optional: true })) teamId?: number,
   ) {
     return this.charactersService.findAll(status, teamId);
@@ -24,6 +25,14 @@ export class CharactersController {
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto) {
     return this.charactersService.create(createCharacterDto);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCharacterDto: UpdateCharacterDto,
+  ) {
+    return this.charactersService.update(id, updateCharacterDto);
   }
 
   @Patch(':id/status')
